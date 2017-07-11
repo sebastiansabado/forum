@@ -25,7 +25,7 @@ class ExampleTest extends TestCase
     {
 
 
-        $response = $this->get('/threads')
+        $this->get('/threads')
 
             ->assertSee($this->thread->title);
 
@@ -36,7 +36,7 @@ class ExampleTest extends TestCase
     {
 
 
-        $response = $this->get('/threads/' . $this->thread->id)
+        $this->get($this->thread->path())
 
             ->assertSee($this->thread->title);
 
@@ -46,9 +46,11 @@ class ExampleTest extends TestCase
      function a_user_can_read_replies_that_are_associated_with_a_thread()
      {
 
-       $reply = factory('App\Reply')->create(['thread_id' => $this->thread->id]);
+       $reply = factory('App\Reply')
 
-        $this->get('/threads/' . $this->thread->id)
+            ->create(['thread_id' => $this->thread->id]);
+
+        $this->get($this->thread->path())
             
             ->assertSee($reply->body);
 
