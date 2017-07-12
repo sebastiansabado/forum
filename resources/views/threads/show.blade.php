@@ -8,10 +8,10 @@
                 <div class="panel-heading">
                 <a href="#">
                     
-                {{$thread->creator->name }} posted:
+                {{$thread->creator->name }} 
 
                 </a> 
-                    {{ $thread->title }}
+                 posted:   {{ $thread->title }}
                 </div>
 
                 <div class="panel-body">
