@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Filters\ThreadFilters;
 use App\Thread;
 use App\Channel;
 use Illuminate\Http\Request;
@@ -22,31 +23,17 @@ class ThreadsController extends Controller
      * @param Channel $channel
      * @return \Illuminate\Http\Response
      */
-    public function index(Channel $channel)
+    public function index(Channel $channel, ThreadFilters $filters)
     {
-        //
-        if($channel->exists){
 
+        $threads = $this->getThreads($channel, $filters);
 
-            $threads = $channel->threads()->latest();
+         if(request()->wantsJson()) {
 
-        } else{
-
-            $threads = Thread::latest();
-
+            return $threads;
+            
         }
 
-
-        //if request('by'), we should filter b the giver username.
-        if ($username = request('by')) {
-
-            $user = \App\User::where('name', $username)->firstOrFail();
-
-            $threads->where('user_id', $user->id);
-
-        }
-
-        $threads = $threads->get();
 
         return view('threads.index', compact('threads'));
 
@@ -111,7 +98,13 @@ class ThreadsController extends Controller
     {
         //
 
-        return view('threads.show', compact('thread'));
+        return view('threads.show', [
+
+            'thread' => $thread,
+
+            'replies' => $thread->replies()->paginate(20)
+
+            ]);
     }
 
     /**
@@ -147,4 +140,29 @@ class ThreadsController extends Controller
     {
         //
     }
+
+
+    /**
+    *Fetch all relevant threads.
+    *
+    *@param Channel $channel
+    *@param ThreadFilters $filters
+    *r@return mixed
+    */
+
+    protected function getThreads(Channel $channel, ThreadFilters $filter)
+    {
+
+        $threads = Thread::latest()->filter($filter);
+
+        if ($channel->exists) {
+
+            $threads->where('channel_id', $channel->id);
+
+        }
+
+        return $threads->get();
+
+    }
+
 }
