@@ -10,6 +10,8 @@ class Thread extends Model
 
     protected $guarded = [];
 
+    protected $with = ['creator', 'channel'];
+
     protected static function boot()
     {
 
@@ -31,6 +33,12 @@ class Thread extends Model
 
     }
 
+    /**
+    *A thread may have replies
+    *
+    *@return \Illuminate\Database\Eloquent\Relations\HasMany
+    */
+
     public function replies()
     {
 
@@ -51,6 +59,12 @@ class Thread extends Model
         return $this->belongsTo(Channel::class);
 
     }
+
+    /**
+    * Add a reply to the thread
+    *
+    *@param $reply
+    */
 
     public function addReply($reply)
     {

@@ -6,8 +6,19 @@ use Illuminate\Database\Eloquent\Model;
 
 
 class Reply extends Model
+
 {
+
+    use Favoritable;
+    /**
+    * Don't auto-apply mass assignment protection
+    *
+    *@var array
+    */
+
 	protected $guarded = [];
+
+    protected $with = ['owner', 'favorites'];
 
     public function owner()
     {
@@ -15,5 +26,5 @@ class Reply extends Model
     	return $this->belongsTo(User::class, 'user_id');
 
     }
-
+    
 }
