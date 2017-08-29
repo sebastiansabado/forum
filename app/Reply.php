@@ -9,7 +9,7 @@ class Reply extends Model
 
 {
 
-    use Favoritable;
+    use Favoritable, RecordsActivity;
     /**
     * Don't auto-apply mass assignment protection
     *
@@ -24,6 +24,13 @@ class Reply extends Model
     {
 
     	return $this->belongsTo(User::class, 'user_id');
+
+    }
+
+    public function thread()
+    {
+
+        return $this->belongsTo(Thread::class);
 
     }
     
