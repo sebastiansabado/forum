@@ -8,7 +8,7 @@ class Favorite extends Model
 {
     //
 
-    use RecordActivity;
+    use RecordsActivity;
 
     /**
 	* Dont auto-apply mass assignment protection
@@ -16,4 +16,12 @@ class Favorite extends Model
 	*@var array
 	*/
 	protected $guarded = [];
+
+	public function favorited()
+	{
+
+		return $this->morphTo();
+
+	}
 }
+
