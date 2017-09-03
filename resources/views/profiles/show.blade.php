@@ -25,11 +25,11 @@
 
 					@foreach ($activity as $record)
 
-						@if (view()->exists("profiles.activities.($record->type)"))	
+						@if (view()->exists("profiles.activities.{$record->type}"))	
 
 							@include ("profiles.activities.{$record->type}", ['activity' => $record])
 
-						@endif
+						@endif 
 
 					@endforeach
 
